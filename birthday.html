@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Abhishek</title>
+<style>
+body{
+    margin:0;
+    padding:0;
+    background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+    font-family:Arial;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    overflow:hidden;
+}
+
+.main-img{
+    width:250px;
+    height:250px;
+    object-fit:contain; /* image fits inside box without stretching */
+    border-radius:15px;
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
+    cursor:pointer;
+    margin-bottom:15px;
+}
+
+.message{
+    font-size:26px;
+    color:white;
+    margin-bottom:20px;
+}
+
+button{
+    padding:12px 25px;
+    font-size:18px;
+    background:#ff4081;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+button:hover{background:#e91e63;}
+
+.confetti{
+    position:absolute;
+    font-size:24px;
+    animation:fall 3s linear infinite;
+}
+@keyframes fall{
+    0%{transform:translateY(-50px);}
+    100%{transform:translateY(900px);}
+}
+.balloon{
+    position:absolute;
+    bottom:-80px;
+    width:45px;
+    animation:floatUp 6s linear infinite;
+}
+@keyframes floatUp{
+    0%{transform:translateY(0);}
+    100%{transform:translateY(-900px);}
+}
+.chocoPiece{
+    position:absolute;
+    font-size:25px;
+    animation:chocoFall 2s ease-out forwards;
+}
+@keyframes chocoFall{
+    to{transform:translateY(200px) rotate(360deg); opacity:0;}
+}
+#levelBanner{
+    display:none;
+    position:absolute;
+    top:30%;
+    font-size:50px;
+    color:yellow;
+    text-shadow:2px 2px 6px black;
+}
+</style>
+</head>
+<body>
+
+<!-- Main image -->
+<img id="mainImage" class="main-img" src="gift.png">
+<div id="message" class="message"></div>
+<button id="actionBtn" onclick="nextStep()">Next</button>
+
+<div id="levelBanner">LEVEL COMPLETED 🏆</div>
+
+<!-- YouTube music player -->
+<iframe id="musicFrame" width="0" height="0" frameborder="0" allow="autoplay; encrypted-media" style="display:none"
+src="https://www.youtube.com/embed/lQNfKP9b9D0?autoplay=1"></iframe>
+
+<script>
+let step = 0;
+
+function nextStep(){
+    step++;
+    let img = document.getElementById("mainImage");
+    let msg = document.getElementById("message");
+    let btn = document.getElementById("actionBtn");
+
+    if(step==1){
+        // Step 1: gift box → replace with Abhishek photo + wish
+        img.src="image.jpg";
+        msg.innerHTML="Happy Birthday Abhishek 🎉";
+        btn.innerHTML="Next";
+        startConfetti();
+        startBalloons();
+    }
+    else if(step==2){
+        // Step 2: cake inside his image
+        img.src="cake.png";
+        msg.innerHTML="Enjoy your cake and celebration 🎂";
+        btn.innerHTML="Gift";
+    }
+    else if(step==3){
+        // Step 3: kitkat image replaces main image
+        img.src="kitkat.png";
+        msg.innerHTML=""; // removed text
+        btn.style.display="none";
+
+        img.onclick=function(){
+            // Chocolate animation
+            let rect=img.getBoundingClientRect();
+            for(let i=0;i<25;i++){
+                let piece=document.createElement("div");
+                piece.innerHTML="🍫";
+                piece.className="chocoPiece";
+                piece.style.left=(rect.left+Math.random()*100)+"px";
+                piece.style.top=rect.top+"px";
+                document.body.appendChild(piece);
+                setTimeout(()=>piece.remove(),2000);
+            }
+                    }
+    }
+}
+
+/* Confetti */
+function startConfetti(){
+    setInterval(()=>{
+        let c=document.createElement("div");
+        c.className="confetti";
+        c.innerHTML="🎉";
+        c.style.left = Math.random()*window.innerWidth+"px";
+        document.body.appendChild(c);
+        setTimeout(()=>c.remove(),3000);
+    },200);
+}
+
+/* Balloons */
+function startBalloons(){
+    setInterval(()=>{
+        let b=document.createElement("div");
+        b.className="balloon";
+        b.innerHTML="🎈";
+        b.style.left=Math.random()*window.innerWidth+"px";
+        document.body.appendChild(b);
+        setTimeout(()=>b.remove(),6000);
+    },500);
+}
+</script>
+
+</body>
+</html>
